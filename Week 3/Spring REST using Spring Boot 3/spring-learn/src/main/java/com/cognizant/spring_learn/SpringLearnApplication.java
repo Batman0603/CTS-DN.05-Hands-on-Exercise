@@ -6,6 +6,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 @SpringBootApplication
 public class SpringLearnApplication {
 
@@ -18,7 +21,21 @@ public class SpringLearnApplication {
 
         SpringApplication.run(SpringLearnApplication.class, args);
 
+        displayCountry();
+
         LOGGER.info("END");
+    }
+
+    public static void displayCountry() {
+
+        ApplicationContext context =
+                new ClassPathXmlApplicationContext("country.xml");
+
+        Country country =
+                context.getBean("country", Country.class);
+
+        LOGGER.debug("Country : {}", country.toString());
+
     }
 
 }
