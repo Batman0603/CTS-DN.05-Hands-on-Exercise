@@ -6,11 +6,33 @@
        http://www.springframework.org/schema/beans
        https://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="country"
-          class="com.cognizant.spring_learn.Country">
+    <bean id="countryList" class="java.util.ArrayList">
 
-        <property name="code" value="IN"/>
-        <property name="name" value="India"/>
+        <constructor-arg>
+            <list>
+
+                <bean class="com.cognizant.spring_learn.Country">
+                    <property name="code" value="IN"/>
+                    <property name="name" value="India"/>
+                </bean>
+
+                <bean class="com.cognizant.spring_learn.Country">
+                    <property name="code" value="US"/>
+                    <property name="name" value="United States"/>
+                </bean>
+
+                <bean class="com.cognizant.spring_learn.Country">
+                    <property name="code" value="DE"/>
+                    <property name="name" value="Germany"/>
+                </bean>
+
+                <bean class="com.cognizant.spring_learn.Country">
+                    <property name="code" value="JP"/>
+                    <property name="name" value="Japan"/>
+                </bean>
+
+            </list>
+        </constructor-arg>
 
     </bean>
 
