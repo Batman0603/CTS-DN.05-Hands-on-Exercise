@@ -1,0 +1,130 @@
+<h1>Student Enrollment Form</h1>
+
+<form
+
+#enrollForm="ngForm"
+
+(ngSubmit)="onSubmit(enrollForm)">
+
+<!-- Student Name -->
+
+<label>
+
+Student Name
+
+</label>
+
+<br>
+
+<input
+
+type="text"
+
+name="studentName"
+
+[(ngModel)]="studentName">
+
+<br><br>
+
+<!-- Student Email -->
+
+<label>
+
+Student Email
+
+</label>
+
+<br>
+
+<input
+
+type="email"
+
+name="studentEmail"
+
+[(ngModel)]="studentEmail">
+
+<br><br>
+
+<!-- Course ID -->
+
+<label>
+
+Course ID
+
+</label>
+
+<br>
+
+<input
+
+type="number"
+
+name="courseId"
+
+[(ngModel)]="courseId">
+
+<br><br>
+
+<!-- Semester -->
+
+<label>
+
+Preferred Semester
+
+</label>
+
+<br>
+
+<select
+
+name="preferredSemester"
+
+[(ngModel)]="preferredSemester">
+
+<option value="">Select Semester</option>
+
+<option value="Odd">
+
+Odd
+
+</option>
+
+<option value="Even">
+
+Even
+
+</option>
+
+</select>
+
+<br><br>
+
+<!-- Terms -->
+
+<div class="checkbox">
+
+<input
+type="checkbox"
+name="agreeToTerms"
+[(ngModel)]="agreeToTerms">
+
+<label for="agreeToTerms">
+    I Agree to the Terms
+</label>
+
+</div>
+
+<br><br>
+
+<button
+
+type="submit"
+
+[disabled]="enrollForm.invalid">
+
+Submit
+
+</button>
+
+</form>
