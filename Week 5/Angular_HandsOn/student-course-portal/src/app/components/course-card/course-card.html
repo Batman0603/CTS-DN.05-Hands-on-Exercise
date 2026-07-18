@@ -1,24 +1,114 @@
-<div class="card">
+<div
 
-    <h2>{{ course.name }}</h2>
+class="card"
 
-    <p>
-        <strong>ID:</strong>
-        {{ course.id }}
-    </p>
+[ngClass]="cardClasses"
 
-    <p>
-        <strong>Code:</strong>
-        {{ course.code }}
-    </p>
+[ngStyle]="{
 
-    <p>
-        <strong>Credits:</strong>
-        {{ course.credits }}
-    </p>
+'border-left':
 
-    <button (click)="enroll()">
-        Enroll
-    </button>
+course.gradeStatus=='passed'
+? '8px solid green'
+
+: course.gradeStatus=='failed'
+
+? '8px solid red'
+
+: '8px solid gray'
+
+}">
+
+<h2>
+
+{{course.name}}
+
+</h2>
+
+<p>
+
+Code :
+
+{{course.code}}
+
+</p>
+
+<p>
+
+Credits :
+
+{{course.credits}}
+
+</p>
+
+<!-- Grade Badge -->
+
+<div [ngSwitch]="course.gradeStatus">
+
+<span
+*ngSwitchCase="'passed'"
+class="passed">
+
+Passed
+
+</span>
+
+<span
+*ngSwitchCase="'failed'"
+class="failed">
+
+Failed
+
+</span>
+
+<span
+*ngSwitchCase="'pending'"
+class="pending">
+
+Pending
+
+</span>
+
+</div>
+
+<br>
+<h3 style="color:red;">TEST TEMPLATE</h3>
+<button
+(click)="enroll()">
+
+Enroll
+
+</button>
+
+<button
+(click)="toggleDetails()">
+
+Show Details
+
+</button>
+
+<!-- Expanded Section -->
+
+<div *ngIf="isExpanded">
+
+<hr>
+
+<p>
+
+Course ID :
+
+{{course.id}}
+
+</p>
+
+<p>
+
+Course Credits :
+
+{{course.credits}}
+
+</p>
+
+</div>
 
 </div>

@@ -1,37 +1,53 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-course-card',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './course-card.html',
   styleUrl: './course-card.css'
 })
-export class CourseCard implements OnChanges {
+export class CourseCard {
 
   @Input()
-  course!: {
-    id: number;
-    name: string;
-    code: string;
-    credits: number;
-  };
+  course: any;
 
-  @Output()
-  enrollRequested = new EventEmitter<number>();
+  // Whether the user has enrolled
+  isEnrolled = false;
 
-  ngOnChanges(changes: SimpleChanges): void {
+  // Controls Show Details
+  isExpanded = false;
 
-    console.log(
-      'Course changed:',
-      changes['course']?.previousValue,
-      '=>',
-      changes['course']?.currentValue
-    );
+  enroll() {
+
+    this.isEnrolled = true;
+
+    console.log("Enrolled in", this.course.name);
 
   }
 
-  enroll() {
-    this.enrollRequested.emit(this.course.id);
+  toggleDetails() {
+
+    this.isExpanded = !this.isExpanded;
+
+  }
+
+  /*
+    Using a getter keeps the HTML template clean
+    instead of writing long ngClass expressions.
+  */
+  get cardClasses() {
+
+    return {
+
+      'card--enrolled': this.isEnrolled,
+
+      'card--full': this.course.credits >= 4,
+
+      'expanded': this.isExpanded
+
+    };
+
   }
 
 }

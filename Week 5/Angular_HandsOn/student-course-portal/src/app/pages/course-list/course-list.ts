@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { CourseCard } from '../../components/course-card/course-card';
@@ -9,54 +9,74 @@ import { CourseCard } from '../../components/course-card/course-card';
   templateUrl: './course-list.html',
   styleUrl: './course-list.css'
 })
-export class CourseList {
+export class CourseList implements OnInit {
+
+  // Show loading message initially
+  isLoading = true;
 
   courses = [
 
     {
-      id: 1,
-      name: 'Angular',
-      code: 'ANG101',
-      credits: 4
+      id:1,
+      name:'Angular',
+      code:'ANG101',
+      credits:4,
+      gradeStatus:'passed'
     },
 
     {
-      id: 2,
-      name: 'React',
-      code: 'REA201',
-      credits: 3
+      id:2,
+      name:'React',
+      code:'REA201',
+      credits:3,
+      gradeStatus:'failed'
     },
 
     {
-      id: 3,
-      name: 'Java',
-      code: 'JAVA301',
-      credits: 4
+      id:3,
+      name:'Java',
+      code:'JAVA301',
+      credits:4,
+      gradeStatus:'pending'
     },
 
     {
-      id: 4,
-      name: 'Python',
-      code: 'PY401',
-      credits: 3
+      id:4,
+      name:'Python',
+      code:'PY401',
+      credits:2,
+      gradeStatus:'passed'
     },
 
     {
-      id: 5,
-      name: 'Machine Learning',
-      code: 'ML501',
-      credits: 5
+      id:5,
+      name:'Machine Learning',
+      code:'ML501',
+      credits:5,
+      gradeStatus:'pending'
     }
 
   ];
 
-  selectedCourseId: number | null = null;
+  ngOnInit(): void {
 
-  onEnroll(courseId: number) {
+    setTimeout(() => {
 
-    console.log('Enrolling in course: ' + courseId);
+      this.isLoading = false;
 
-    this.selectedCourseId = courseId;
+    },1500);
+
+  }
+
+  /*
+   trackBy improves performance.
+   Angular reuses DOM elements instead of recreating
+   every item whenever the array changes.
+  */
+
+  trackByCourseId(index:number,course:any){
+
+      return course.id;
 
   }
 
