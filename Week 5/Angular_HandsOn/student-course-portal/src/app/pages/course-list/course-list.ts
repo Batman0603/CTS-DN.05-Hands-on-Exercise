@@ -16,47 +16,49 @@ export class CourseList implements OnInit {
 
   courses = [
 
-    {
-      id:1,
-      name:'Angular',
-      code:'ANG101',
-      credits:4,
-      gradeStatus:'passed'
-    },
+  {
 
-    {
-      id:2,
-      name:'React',
-      code:'REA201',
-      credits:3,
-      gradeStatus:'failed'
-    },
+    id:1,
 
-    {
-      id:3,
-      name:'Java',
-      code:'JAVA301',
-      credits:4,
-      gradeStatus:'pending'
-    },
+    name:'Angular',
 
-    {
-      id:4,
-      name:'Python',
-      code:'PY401',
-      credits:2,
-      gradeStatus:'passed'
-    },
+    code:'ANG101',
 
-    {
-      id:5,
-      name:'Machine Learning',
-      code:'ML501',
-      credits:5,
-      gradeStatus:'pending'
-    }
+    credits:1,
 
-  ];
+    gradeStatus:'passed'
+
+  },
+
+  {
+
+    id:2,
+
+    name:'React',
+
+    code:'REA201',
+
+    credits:3,
+
+    gradeStatus:'failed'
+
+  },
+
+  {
+
+    id:3,
+
+    name:'Java',
+
+    code:'JAVA301',
+
+    credits:null,
+
+    gradeStatus:'pending'
+
+  }
+
+];
 
   ngOnInit(): void {
 

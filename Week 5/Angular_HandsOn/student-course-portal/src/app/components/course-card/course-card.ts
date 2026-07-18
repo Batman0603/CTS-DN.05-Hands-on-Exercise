@@ -1,9 +1,18 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { HighlightDirective } from '../../directives/highlight';
+import { CreditLabelPipe } from '../../pipes/credit-label-pipe';
+
 @Component({
   selector: 'app-course-card',
-  imports: [CommonModule],
+
+  imports: [
+    CommonModule,
+    HighlightDirective,
+    CreditLabelPipe
+  ],
+
   templateUrl: './course-card.html',
   styleUrl: './course-card.css'
 })
@@ -12,10 +21,7 @@ export class CourseCard {
   @Input()
   course: any;
 
-  // Whether the user has enrolled
   isEnrolled = false;
-
-  // Controls Show Details
   isExpanded = false;
 
   enroll() {
@@ -32,10 +38,6 @@ export class CourseCard {
 
   }
 
-  /*
-    Using a getter keeps the HTML template clean
-    instead of writing long ngClass expressions.
-  */
   get cardClasses() {
 
     return {

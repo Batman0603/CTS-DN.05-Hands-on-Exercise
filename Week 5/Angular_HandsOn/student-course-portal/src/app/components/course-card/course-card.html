@@ -2,6 +2,8 @@
 
 class="card"
 
+appHighlight="lightblue"
+
 [ngClass]="cardClasses"
 
 [ngStyle]="{
@@ -9,6 +11,7 @@ class="card"
 'border-left':
 
 course.gradeStatus=='passed'
+
 ? '8px solid green'
 
 : course.gradeStatus=='failed'
@@ -37,7 +40,7 @@ Code :
 
 Credits :
 
-{{course.credits}}
+{{ course.credits | creditLabel }}
 
 </p>
 
@@ -72,7 +75,7 @@ Pending
 </div>
 
 <br>
-<h3 style="color:red;">TEST TEMPLATE</h3>
+
 <button
 (click)="enroll()">
 
