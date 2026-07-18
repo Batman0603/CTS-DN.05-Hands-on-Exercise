@@ -1,0 +1,14 @@
+h1{
+    color: navy;
+}
+
+button{
+    margin-top:15px;
+    padding:8px 20px;
+}
+
+input{
+    width:250px;
+    padding:8px;
+    margin-top:10px;
+}

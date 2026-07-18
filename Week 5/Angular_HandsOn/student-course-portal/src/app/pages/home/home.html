@@ -1,11 +1,39 @@
-<h1>Welcome to Student Course Portal</h1>
+<!-- String Interpolation -->
+<h1>{{ portalName }}</h1>
 
 <p>
-Manage your courses, monitor your academic progress and view your student profile.
+Welcome to the Student Course Portal.
+Manage your courses and monitor your academic progress.
 </p>
 
-<div>
-    <p><strong>Courses Available:</strong> 12</p>
-    <p><strong>Enrolled:</strong> 3</p>
-    <p><strong>GPA:</strong> 3.8</p>
-</div>
+<hr>
+
+<!-- Property Binding + Event Binding -->
+
+<button
+    [disabled]="!isPortalActive"
+    (click)="onEnrollClick()">
+
+    Enroll Now
+
+</button>
+
+<p>{{ message }}</p>
+
+<hr>
+
+<!-- Two-Way Binding -->
+
+<label>Search Course</label>
+
+<br><br>
+
+<input
+    type="text"
+    [(ngModel)]="searchTerm"
+    placeholder="Enter course name">
+
+<p>
+Searching for:
+<strong>{{ searchTerm }}</strong>
+</p>
