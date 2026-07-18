@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -7,32 +7,36 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
-export class Home {
+export class Home implements OnInit, OnDestroy {
 
-  // String Interpolation
   portalName = 'Student Course Portal';
 
-  // Property Binding
-  isPortalActive = false;
+  isPortalActive = true;
 
-  // Event Binding
   message = '';
 
-  /*
-[property]
-One-way binding from Component -> DOM.
-
-[(ngModel)]
-Two-way binding between Component <-> DOM.
-Changes in the component update the view,
-and user input updates the component automatically.
-*/
-
-  // Two-Way Binding
   searchTerm = '';
+
+  availableCourses = 0;
 
   onEnrollClick() {
     this.message = 'Enrollment opened!';
+  }
+
+  ngOnInit(): void {
+
+    // Simulate fetching data
+
+    this.availableCourses = 12;
+
+    console.log('HomeComponent initialised — courses loaded');
+
+  }
+
+  ngOnDestroy(): void {
+
+    console.log('HomeComponent destroyed');
+
   }
 
 }
