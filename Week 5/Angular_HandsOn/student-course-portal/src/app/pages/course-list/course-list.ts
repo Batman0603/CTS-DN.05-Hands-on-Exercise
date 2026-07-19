@@ -3,80 +3,48 @@ import { CommonModule } from '@angular/common';
 
 import { CourseCard } from '../../components/course-card/course-card';
 
+import { CourseService } from '../../services/course.service';
+
+import { Course } from '../../models/course.model';
+
 @Component({
-  selector: 'app-course-list',
-  imports: [CommonModule, CourseCard],
-  templateUrl: './course-list.html',
-  styleUrl: './course-list.css'
+
+  selector:'app-course-list',
+
+  standalone:true,
+
+  imports:[
+    CommonModule,
+    CourseCard
+  ],
+
+  templateUrl:'./course-list.html',
+
+  styleUrl:'./course-list.css'
+
 })
-export class CourseList implements OnInit {
 
-  // Show loading message initially
-  isLoading = true;
+export class CourseList implements OnInit{
 
-  courses = [
+  isLoading=true;
 
-  {
+  courses:Course[]=[];
 
-    id:1,
+  constructor(private courseService:CourseService){}
 
-    name:'Angular',
+  ngOnInit(): void{
 
-    code:'ANG101',
+      this.courses=this.courseService.getCourses();
 
-    credits:1,
+      setTimeout(()=>{
 
-    gradeStatus:'passed'
+          this.isLoading=false;
 
-  },
-
-  {
-
-    id:2,
-
-    name:'React',
-
-    code:'REA201',
-
-    credits:3,
-
-    gradeStatus:'failed'
-
-  },
-
-  {
-
-    id:3,
-
-    name:'Java',
-
-    code:'JAVA301',
-
-    credits:null,
-
-    gradeStatus:'pending'
+      },1500);
 
   }
 
-];
-
-  ngOnInit(): void {
-
-    setTimeout(() => {
-
-      this.isLoading = false;
-
-    },1500);
-
-  }
-
-  /*
-   trackBy improves performance.
-   Angular reuses DOM elements instead of recreating
-   every item whenever the array changes.
-  */
-
-  trackByCourseId(index:number,course:any){
+  trackByCourseId(index:number,course:Course){
 
       return course.id;
 
