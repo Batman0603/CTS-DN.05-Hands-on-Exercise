@@ -1,0 +1,86 @@
+h1{
+
+    text-align:center;
+
+    margin-bottom:25px;
+
+}
+
+form{
+
+    width:450px;
+
+    margin:auto;
+
+    padding:25px;
+
+    border:1px solid #ccc;
+
+    border-radius:8px;
+
+    background:#f8f8f8;
+
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+
+}
+
+label{
+
+    display:block;
+
+    font-weight:bold;
+
+    margin-bottom:6px;
+
+}
+
+input,
+select{
+
+    width:100%;
+
+    padding:10px;
+
+    margin-bottom:15px;
+
+    border:1px solid gray;
+
+    border-radius:5px;
+
+    box-sizing:border-box;
+
+}
+
+input[type="checkbox"]{
+
+    width:auto;
+
+    margin-right:10px;
+
+}
+
+button{
+
+    width:100%;
+
+    padding:10px;
+
+    background:#1976d2;
+
+    color:white;
+
+    border:none;
+
+    border-radius:5px;
+
+    cursor:pointer;
+
+}
+
+button:disabled{
+
+    background:gray;
+
+    cursor:not-allowed;
+
+}
