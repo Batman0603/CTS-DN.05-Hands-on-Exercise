@@ -9,14 +9,18 @@ class="card"
 'border-left':
 
 course.gradeStatus=='passed'
+
 ? '8px solid green'
 
 : course.gradeStatus=='failed'
+
 ? '8px solid red'
 
 : '8px solid gray'
 
-}">
+}"
+
+(click)="openCourse()">
 
 <h2>
 
@@ -40,12 +44,12 @@ Credits :
 
 </p>
 
-<!-- Grade Badge -->
-
 <div [ngSwitch]="course.gradeStatus">
 
 <span
+
 *ngSwitchCase="'passed'"
+
 class="passed">
 
 Passed
@@ -53,7 +57,9 @@ Passed
 </span>
 
 <span
+
 *ngSwitchCase="'failed'"
+
 class="failed">
 
 Failed
@@ -61,7 +67,9 @@ Failed
 </span>
 
 <span
+
 *ngSwitchCase="'pending'"
+
 class="pending">
 
 Pending
@@ -72,49 +80,23 @@ Pending
 
 <br>
 
-<!-- Enrollment Button -->
+<!-- stopPropagation prevents the card click -->
 
 <button
 
-(click)="toggleEnrollment()">
+(click)="$event.stopPropagation(); toggleEnrollment()">
 
-{{
-
-enrollmentService.isEnrolled(course.id)
-
-?
-
-'Unenroll'
-
-:
-
-'Enroll'
-
-}}
+{{ enrollmentService.isEnrolled(course.id) ? 'Unenroll' : 'Enroll' }}
 
 </button>
 
 <button
 
-(click)="toggleDetails()">
+(click)="$event.stopPropagation(); toggleDetails()">
 
-{{
-
-isExpanded
-
-?
-
-'Hide Details'
-
-:
-
-'Show Details'
-
-}}
+Show Details
 
 </button>
-
-<!-- Expanded Section -->
 
 <div *ngIf="isExpanded">
 
@@ -130,17 +112,9 @@ Course ID :
 
 <p>
 
-Course Credits :
+Credits :
 
 {{course.credits}}
-
-</p>
-
-<p>
-
-Status :
-
-{{course.gradeStatus}}
 
 </p>
 

@@ -1,7 +1,53 @@
-<h2>Course Detail Page</h2>
+<div *ngIf="course">
 
-<p>
+    <h2>
 
-Course details will be displayed here.
+        {{course.name}}
 
-</p>
+    </h2>
+
+    <hr>
+
+    <p>
+
+        <strong>ID :</strong>
+
+        {{course.id}}
+
+    </p>
+
+    <p>
+
+        <strong>Course Code :</strong>
+
+        {{course.code}}
+
+    </p>
+
+    <p>
+
+        <strong>Credits :</strong>
+
+        {{course.credits}}
+
+    </p>
+
+    <p>
+
+        <strong>Status :</strong>
+
+        {{course.gradeStatus}}
+
+    </p>
+
+</div>
+
+<div *ngIf="!course">
+
+    <h2>
+
+        Course Not Found
+
+    </h2>
+
+</div>

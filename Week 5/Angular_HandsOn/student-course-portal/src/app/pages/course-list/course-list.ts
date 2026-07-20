@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { Router } from '@angular/router';
+
 import { CourseCard } from '../../components/course-card/course-card';
 
 import { CourseService } from '../../services/course.service';
@@ -30,23 +32,35 @@ export class CourseList implements OnInit{
 
   courses:Course[]=[];
 
-  constructor(private courseService:CourseService){}
+  constructor(
 
-  ngOnInit(): void{
+    private courseService:CourseService,
+
+    private router:Router
+
+  ){}
+
+  ngOnInit():void{
+
+    setTimeout(()=>{
 
       this.courses=this.courseService.getCourses();
 
-      setTimeout(()=>{
+      this.isLoading=false;
 
-          this.isLoading=false;
-
-      },1500);
+    },1500);
 
   }
 
   trackByCourseId(index:number,course:Course){
 
       return course.id;
+
+  }
+
+  openCourse(id:number){
+
+      this.router.navigate(['courses',id]);
 
   }
 

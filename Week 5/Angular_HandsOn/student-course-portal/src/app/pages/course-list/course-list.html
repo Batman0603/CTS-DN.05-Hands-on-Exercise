@@ -1,6 +1,8 @@
-<h1>Available Courses</h1>
+<h1>
 
-<!-- Loading -->
+Available Courses
+
+</h1>
 
 <p *ngIf="isLoading">
 
@@ -8,34 +10,32 @@ Loading courses...
 
 </p>
 
-<!-- Courses -->
-
 <div *ngIf="!isLoading">
 
-    <div *ngIf="courses.length>0; else noCourses">
+<div *ngIf="courses.length>0; else noCourses">
 
-        <app-course-card
+<app-course-card
 
-            *ngFor="let course of courses;
-                     let i=index;
-                     trackBy:trackByCourseId"
+*ngFor="let course of courses;
+let i=index;
+trackBy:trackByCourseId"
 
-            [course]="course">
+[course]="course"
 
-        </app-course-card>
+(cardClicked)="openCourse($event)">
 
-    </div>
+</app-course-card>
 
 </div>
 
-<!-- Else Block -->
+</div>
 
 <ng-template #noCourses>
 
-    <p>
+<p>
 
-        No courses available.
+No courses available.
 
-    </p>
+</p>
 
 </ng-template>
