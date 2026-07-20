@@ -1,20 +1,18 @@
-<h1>{{portalName}}</h1>
+<h1>{{ portalName }}</h1>
 
 <p>
-Welcome to the Student Course Portal.
+  Welcome to the Student Course Portal.
 </p>
 
 <button
-[disabled]="!isPortalActive"
-(click)="onEnrollClick()">
+(click)="onEnrollClick()"
+[disabled]="!isPortalActive">
 
-Enroll Now
+    Enroll Now
 
 </button>
 
-<p>{{message}}</p>
-
-<br>
+<p>{{ message }}</p>
 
 <input
 type="text"
@@ -25,44 +23,56 @@ placeholder="Search Course">
 
 Searching for :
 
-{{searchTerm}}
+<strong>{{searchTerm}}</strong>
 
 </p>
 
-<hr>
+<div class="section">
 
 <h2>Statistics</h2>
 
-<p>
+<div class="stats-grid">
 
-Courses Available :
+<div class="stat-card">
 
-{{coursesCount}}
+<h2>{{coursesCount}}</h2>
 
-</p>
+<p>Courses</p>
 
-<p>
+</div>
 
-Enrolled :
+<div class="stat-card">
 
-3
+<h2>3</h2>
 
-</p>
+<p>Enrolled</p>
 
-<p>
+</div>
 
-GPA :
+<div class="stat-card">
 
-3.8
+<h2>3.8</h2>
 
-</p>
-<hr>
+<p>GPA</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="widget">
 
 <app-course-summary-widget>
 
 </app-course-summary-widget>
-<hr>
+
+</div>
+
+<div class="widget">
 
 <app-notification>
 
 </app-notification>
+
+</div>

@@ -6,11 +6,10 @@ import { StudentProfile } from './pages/student-profile/student-profile';
 import { CourseList } from './pages/course-list/course-list';
 import { CourseDetail } from './pages/course-detail/course-detail';
 import { CoursesLayout } from './pages/courses-layout/courses-layout';
-
-import { EnrollmentForm } from './pages/enrollment-form/enrollment-form';
-import { ReactiveEnrollmentForm } from './pages/reactive-enrollment-form/reactive-enrollment-form';
-
 import { NotFound } from './pages/not-found/not-found';
+import { authGuard } from './guards/auth-guard';
+
+
 
 export const routes: Routes = [
 
@@ -40,19 +39,24 @@ export const routes: Routes = [
   },
 
   {
-    path: 'profile',
-    component: StudentProfile
-  },
+  path: 'profile',
+
+  canActivate: [authGuard],
+
+  component: StudentProfile
+},
 
   {
-    path: 'enroll',
-    component: EnrollmentForm
-  },
+  path: 'enroll',
 
-  {
-    path: 'enroll-reactive',
-    component: ReactiveEnrollmentForm
-  },
+  canActivate: [authGuard],
+
+  loadChildren: () =>
+
+    import('./features/enrollment/enrollment.module')
+
+      .then(m => m.EnrollmentModule)
+},
 
   {
     path: '**',
