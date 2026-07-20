@@ -1,15 +1,16 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { HighlightDirective } from '../../directives/highlight';
+import { Course } from '../../models/course.model';
 import { CreditLabelPipe } from '../../pipes/credit-label-pipe';
+import { EnrollmentService } from '../../services/enrollment';
 
 @Component({
   selector: 'app-course-card',
+  standalone: true,
 
   imports: [
     CommonModule,
-    HighlightDirective,
     CreditLabelPipe
   ],
 
@@ -19,20 +20,33 @@ import { CreditLabelPipe } from '../../pipes/credit-label-pipe';
 export class CourseCard {
 
   @Input()
-  course: any;
+  course!: Course;
 
-  isEnrolled = false;
   isExpanded = false;
 
-  enroll() {
+  constructor(
+    public enrollmentService: EnrollmentService
+  ) {}
 
-    this.isEnrolled = true;
+  toggleEnrollment(): void {
 
-    console.log("Enrolled in", this.course.name);
+    if (this.enrollmentService.isEnrolled(this.course.id)) {
+
+      this.enrollmentService.unenroll(this.course.id);
+
+      console.log("Unenrolled from", this.course.name);
+
+    } else {
+
+      this.enrollmentService.enroll(this.course.id);
+
+      console.log("Enrolled in", this.course.name);
+
+    }
 
   }
 
-  toggleDetails() {
+  toggleDetails(): void {
 
     this.isExpanded = !this.isExpanded;
 
@@ -42,11 +56,14 @@ export class CourseCard {
 
     return {
 
-      'card--enrolled': this.isEnrolled,
+      'card--enrolled':
+        this.enrollmentService.isEnrolled(this.course.id),
 
-      'card--full': this.course.credits >= 4,
+      'card--full':
+        this.course.credits >= 4,
 
-      'expanded': this.isExpanded
+      'expanded':
+        this.isExpanded
 
     };
 

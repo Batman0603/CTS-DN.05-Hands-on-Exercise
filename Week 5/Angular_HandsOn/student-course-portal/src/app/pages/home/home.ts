@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { CourseService } from '../../services/course.service';
+import { Notification } from '../../components/notification/notification';
 import { CourseSummaryWidget } from '../../components/course-summary-widget/course-summary-widget';
 
 @Component({
@@ -11,10 +12,16 @@ import { CourseSummaryWidget } from '../../components/course-summary-widget/cour
 
   standalone:true,
 
-  imports:[
-    CommonModule,
-    FormsModule,
-    CourseSummaryWidget
+  imports: [
+
+  CommonModule,
+
+  FormsModule,
+
+  CourseSummaryWidget,
+
+  Notification
+
 ],
 
   templateUrl:'./home.html',

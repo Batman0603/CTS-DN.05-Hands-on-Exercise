@@ -1,0 +1,25 @@
+h1{
+
+    text-align:center;
+
+}
+
+.course-card{
+
+    border:1px solid #ccc;
+
+    border-radius:8px;
+
+    padding:15px;
+
+    margin:15px 0;
+
+    background:#f9f9f9;
+
+}
+
+.course-card h3{
+
+    margin-top:0;
+
+}

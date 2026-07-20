@@ -2,8 +2,6 @@
 
 class="card"
 
-appHighlight="lightblue"
-
 [ngClass]="cardClasses"
 
 [ngStyle]="{
@@ -11,11 +9,9 @@ appHighlight="lightblue"
 'border-left':
 
 course.gradeStatus=='passed'
-
 ? '8px solid green'
 
 : course.gradeStatus=='failed'
-
 ? '8px solid red'
 
 : '8px solid gray'
@@ -40,7 +36,7 @@ Code :
 
 Credits :
 
-{{ course.credits | creditLabel }}
+{{course.credits | creditLabel}}
 
 </p>
 
@@ -76,17 +72,45 @@ Pending
 
 <br>
 
-<button
-(click)="enroll()">
+<!-- Enrollment Button -->
 
-Enroll
+<button
+
+(click)="toggleEnrollment()">
+
+{{
+
+enrollmentService.isEnrolled(course.id)
+
+?
+
+'Unenroll'
+
+:
+
+'Enroll'
+
+}}
 
 </button>
 
 <button
+
 (click)="toggleDetails()">
 
-Show Details
+{{
+
+isExpanded
+
+?
+
+'Hide Details'
+
+:
+
+'Show Details'
+
+}}
 
 </button>
 
@@ -109,6 +133,14 @@ Course ID :
 Course Credits :
 
 {{course.credits}}
+
+</p>
+
+<p>
+
+Status :
+
+{{course.gradeStatus}}
 
 </p>
 

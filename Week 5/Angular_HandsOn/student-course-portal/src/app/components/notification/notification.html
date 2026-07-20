@@ -1,0 +1,33 @@
+<h2>
+
+Notification Component
+
+</h2>
+
+<button
+
+(click)="addMessage()">
+
+Add Notification
+
+</button>
+
+<hr>
+
+<h3>
+
+Messages
+
+</h3>
+
+<ul>
+
+<li
+
+*ngFor="let msg of notificationService.getNotifications()">
+
+{{msg}}
+
+</li>
+
+</ul>
