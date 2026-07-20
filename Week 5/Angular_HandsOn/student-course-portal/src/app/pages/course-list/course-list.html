@@ -1,8 +1,31 @@
-<h1>
+<h1>Available Courses</h1>
 
-Available Courses
+<hr>
 
-</h1>
+<div class="search-container">
+
+    <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        placeholder="Search Course">
+
+    <button (click)="searchCourses()">
+
+        Search
+
+    </button>
+
+</div>
+
+<p class="search-text">
+
+Current Search :
+
+<b>{{searchTerm || 'None'}}</b>
+
+</p>
+
+<hr>
 
 <p *ngIf="isLoading">
 
@@ -12,12 +35,11 @@ Loading courses...
 
 <div *ngIf="!isLoading">
 
-<div *ngIf="courses.length>0; else noCourses">
+<div class="cards">
 
 <app-course-card
 
 *ngFor="let course of courses;
-let i=index;
 trackBy:trackByCourseId"
 
 [course]="course"
@@ -29,13 +51,3 @@ trackBy:trackByCourseId"
 </div>
 
 </div>
-
-<ng-template #noCourses>
-
-<p>
-
-No courses available.
-
-</p>
-
-</ng-template>
