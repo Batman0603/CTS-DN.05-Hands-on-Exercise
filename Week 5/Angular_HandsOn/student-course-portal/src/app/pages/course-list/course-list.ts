@@ -7,19 +7,14 @@ import { Course } from '../../models/course.model';
 
 @Component({
   selector: 'app-course-list',
-
   standalone: true,
-
   imports: [
     CommonModule,
     CourseCard
   ],
-
   templateUrl: './course-list.html',
-
   styleUrl: './course-list.css'
 })
-
 export class CourseList implements OnInit {
 
   courses: Course[] = [];
@@ -33,30 +28,34 @@ export class CourseList implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
     this.loadCourses();
-
   }
 
   loadCourses(): void {
 
+    // Show loading spinner
     this.isLoading = true;
+
+    // Clear previous error
+    this.errorMessage = '';
 
     this.courseService.getCourses().subscribe({
 
       next: (courses: Course[]) => {
 
+        console.log('Courses received:', courses);
+
         this.courses = courses;
 
+        this.isLoading = false;
+
       },
 
-      error: (err) => {
+      error: (err: Error) => {
+
+        console.error(err);
 
         this.errorMessage = err.message;
-
-      },
-
-      complete: () => {
 
         this.isLoading = false;
 
@@ -67,9 +66,7 @@ export class CourseList implements OnInit {
   }
 
   trackByCourseId(index: number, course: Course): number {
-
     return course.id;
-
   }
 
 }

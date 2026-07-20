@@ -2,7 +2,9 @@ import { HttpInterceptorFn } from '@angular/common/http';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
-  const authReq = req.clone({
+  console.log('Auth Interceptor Executed');
+
+  const clonedRequest = req.clone({
 
     setHeaders: {
 
@@ -12,8 +14,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   });
 
-  console.log('Auth Interceptor Executed');
-
-  return next(authReq);
+  return next(clonedRequest);
 
 };

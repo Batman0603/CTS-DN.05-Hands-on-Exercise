@@ -6,6 +6,8 @@ import { Observable } from 'rxjs';
 
 import { Course } from '../models/course.model';
 
+import { delay , tap } from 'rxjs/operators';
+
 @Injectable({
 
   providedIn: 'root'
@@ -16,15 +18,23 @@ export class CourseService {
 
   private apiUrl = 'http://localhost:3000/courses';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+     console.log("HTTP COURSE SERVICE");
+  }
 
   // GET ALL COURSES
 
   getCourses(): Observable<Course[]> {
 
-    return this.http.get<Course[]>(this.apiUrl);
+  console.log("HTTP REQUEST STARTED");
 
-  }
+  return this.http
+    .get<Course[]>(this.apiUrl)
+    .pipe(
+      tap(() => console.log("HTTP RESPONSE RECEIVED")),
+      delay(2000)
+    );
+}
 
   // GET COURSE BY ID
 
