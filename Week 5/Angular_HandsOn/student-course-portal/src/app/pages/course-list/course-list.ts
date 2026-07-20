@@ -1,97 +1,74 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, ActivatedRoute } from '@angular/router';
 
 import { CourseCard } from '../../components/course-card/course-card';
 import { CourseService } from '../../services/course.service';
 import { Course } from '../../models/course.model';
-import { FormsModule } from '@angular/forms';
 
 @Component({
+  selector: 'app-course-list',
 
-  selector:'app-course-list',
+  standalone: true,
 
-  standalone:true,
-
- imports:[
-
+  imports: [
     CommonModule,
-
-    FormsModule,
-
     CourseCard
+  ],
 
-],
+  templateUrl: './course-list.html',
 
-  templateUrl:'./course-list.html',
-
-  styleUrl:'./course-list.css'
-
+  styleUrl: './course-list.css'
 })
 
-export class CourseList implements OnInit{
+export class CourseList implements OnInit {
 
-  isLoading=true;
+  courses: Course[] = [];
 
-  courses:Course[]=[];
+  isLoading = true;
 
-  searchTerm='';
+  errorMessage = '';
 
   constructor(
+    private courseService: CourseService
+  ) {}
 
-    private courseService:CourseService,
+  ngOnInit(): void {
 
-    private router:Router,
-
-    private route:ActivatedRoute
-
-  ){}
-
-  ngOnInit():void{
-
-    this.searchTerm =
-
-      this.route.snapshot.queryParamMap.get('search') || '';
-
-    setTimeout(()=>{
-
-      this.courses=this.courseService.getCourses();
-
-      this.isLoading=false;
-
-    },1500);
+    this.loadCourses();
 
   }
 
-  trackByCourseId(index:number,course:Course){
+  loadCourses(): void {
 
-      return course.id;
+    this.isLoading = true;
+
+    this.courseService.getCourses().subscribe({
+
+      next: (courses: Course[]) => {
+
+        this.courses = courses;
+
+      },
+
+      error: (err) => {
+
+        this.errorMessage = err.message;
+
+      },
+
+      complete: () => {
+
+        this.isLoading = false;
+
+      }
+
+    });
 
   }
 
-  openCourse(id:number){
+  trackByCourseId(index: number, course: Course): number {
 
-      this.router.navigate(['courses',id]);
-
-  }
-
-  searchCourses(){
-
-      this.router.navigate(
-
-        ['courses'],
-
-        {
-
-          queryParams:{
-
-            search:this.searchTerm
-
-          }
-
-        }
-
-      );
+    return course.id;
 
   }
 

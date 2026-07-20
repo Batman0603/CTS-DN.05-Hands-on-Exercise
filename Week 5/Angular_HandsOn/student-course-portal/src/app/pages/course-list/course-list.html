@@ -1,53 +1,33 @@
 <h1>Available Courses</h1>
 
-<hr>
-
-<div class="search-container">
-
-    <input
-        type="text"
-        [(ngModel)]="searchTerm"
-        placeholder="Search Course">
-
-    <button (click)="searchCourses()">
-
-        Search
-
-    </button>
-
-</div>
-
-<p class="search-text">
-
-Current Search :
-
-<b>{{searchTerm || 'None'}}</b>
-
-</p>
-
-<hr>
-
 <p *ngIf="isLoading">
 
-Loading courses...
+Loading Courses...
 
 </p>
 
-<div *ngIf="!isLoading">
+<p
 
-<div class="cards">
+*ngIf="errorMessage"
+
+style="color:red;">
+
+{{errorMessage}}
+
+</p>
+
+<div
+
+*ngIf="!isLoading">
 
 <app-course-card
 
 *ngFor="let course of courses;
-trackBy:trackByCourseId"
 
-[course]="course"
+trackBy: trackByCourseId"
 
-(cardClicked)="openCourse($event)">
+[course]="course">
 
 </app-course-card>
-
-</div>
 
 </div>

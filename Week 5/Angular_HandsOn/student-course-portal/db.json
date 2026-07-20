@@ -1,65 +1,71 @@
 {
   "courses": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Angular",
       "code": "ANG101",
       "credits": 4,
       "gradeStatus": "passed"
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "React",
       "code": "REA201",
       "credits": 3,
       "gradeStatus": "failed"
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Java",
       "code": "JAVA301",
       "credits": 4,
       "gradeStatus": "pending"
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "Python",
       "code": "PY401",
       "credits": 2,
       "gradeStatus": "passed"
     },
     {
-      "id": 5,
+      "id": "5",
       "name": "Machine Learning",
       "code": "ML501",
       "credits": 5,
       "gradeStatus": "pending"
+    },
+    {
+      "name": "Karthi",
+      "code": "NEW101",
+      "credits": 3,
+      "gradeStatus": "pending",
+      "id": "JLUlsU8-4es"
     }
   ],
-
   "students": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Karthikeyan",
       "email": "karthik@example.com"
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Rahul",
       "email": "rahul@example.com"
     }
   ],
-
   "enrollments": [
     {
-      "id": 1,
+      "id": "1",
       "studentId": 1,
       "courseId": 1
     },
     {
-      "id": 2,
+      "id": "2",
       "studentId": 2,
       "courseId": 2
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

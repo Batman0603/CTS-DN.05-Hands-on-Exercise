@@ -12,6 +12,6 @@ export class AuthService {
     Change to false to test AuthGuard.
   */
 
-  isLoggedIn = false;
+  isLoggedIn = true;
 
 }

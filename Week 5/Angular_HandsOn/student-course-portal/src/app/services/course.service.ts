@@ -1,72 +1,90 @@
 import { Injectable } from '@angular/core';
+
+import { HttpClient } from '@angular/common/http';
+
+import { Observable } from 'rxjs';
+
 import { Course } from '../models/course.model';
 
 @Injectable({
+
   providedIn: 'root'
+
 })
+
 export class CourseService {
 
-  private courses: Course[] = [
+  private apiUrl = 'http://localhost:3000/courses';
 
-    {
-      id: 1,
-      name: 'Angular',
-      code: 'ANG101',
-      credits: 4,
-      gradeStatus: 'passed'
-    },
+  constructor(private http: HttpClient) {}
 
-    {
-      id: 2,
-      name: 'React',
-      code: 'REA201',
-      credits: 3,
-      gradeStatus: 'failed'
-    },
+  // GET ALL COURSES
 
-    {
-      id: 3,
-      name: 'Java',
-      code: 'JAVA301',
-      credits: 4,
-      gradeStatus: 'pending'
-    },
+  getCourses(): Observable<Course[]> {
 
-    {
-      id: 4,
-      name: 'Python',
-      code: 'PY401',
-      credits: 2,
-      gradeStatus: 'passed'
-    },
-
-    {
-      id: 5,
-      name: 'Machine Learning',
-      code: 'ML501',
-      credits: 5,
-      gradeStatus: 'pending'
-    }
-
-  ];
-
-  constructor() {}
-
-  getCourses(): Course[] {
-
-    return this.courses;
+    return this.http.get<Course[]>(this.apiUrl);
 
   }
 
-  getCourseById(id: number): Course | undefined {
+  // GET COURSE BY ID
 
-    return this.courses.find(course => course.id === id);
+  getCourseById(id: number): Observable<Course> {
+
+    return this.http.get<Course>(`${this.apiUrl}/${id}`);
 
   }
 
-  addCourse(course: Course): void {
+  // CREATE COURSE
 
-    this.courses.push(course);
+  createCourse(
+
+    course: Omit<Course, 'id'>
+
+  ): Observable<Course> {
+
+    return this.http.post<Course>(
+
+      this.apiUrl,
+
+      course
+
+    );
+
+  }
+
+  // UPDATE COURSE
+
+  updateCourse(
+
+    id: number,
+
+    course: Course
+
+  ): Observable<Course> {
+
+    return this.http.put<Course>(
+
+      `${this.apiUrl}/${id}`,
+
+      course
+
+    );
+
+  }
+
+  // DELETE COURSE
+
+  deleteCourse(
+
+    id: number
+
+  ): Observable<void> {
+
+    return this.http.delete<void>(
+
+      `${this.apiUrl}/${id}`
+
+    );
 
   }
 

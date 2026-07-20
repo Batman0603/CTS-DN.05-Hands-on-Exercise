@@ -1,50 +1,35 @@
-import { Component } from '@angular/core';
-
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { CourseService } from '../../services/course.service';
+import { Course } from '../../models/course.model';
 
 @Component({
-
-  selector:'app-course-summary-widget',
-
-  standalone:true,
-
-  imports:[
-    CommonModule
-  ],
-
-  templateUrl:'./course-summary-widget.html',
-
-  styleUrl:'./course-summary-widget.css'
-
+  selector: 'app-course-summary-widget',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './course-summary-widget.html',
+  styleUrl: './course-summary-widget.css'
 })
+export class CourseSummaryWidget implements OnInit {
 
-export class CourseSummaryWidget{
+  count = 0;
 
-  constructor(public courseService:CourseService){}
+  constructor(
+    private courseService: CourseService
+  ) {}
 
-  get count(){
+  ngOnInit(): void {
 
-      return this.courseService.getCourses().length;
+    this.courseService.getCourses().subscribe({
 
-  }
+      next: (courses: Course[]) => {
 
-  addSampleCourse(){
+        this.count = courses.length;
 
-      this.courseService.addCourse({
+      }
 
-          id:6,
-
-          name:'Cloud Computing',
-
-          code:'CC601',
-
-          credits:4,
-
-          gradeStatus:'passed'
-
-      });
+    });
 
   }
 
