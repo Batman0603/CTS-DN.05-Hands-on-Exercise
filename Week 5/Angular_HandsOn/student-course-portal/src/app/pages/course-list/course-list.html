@@ -1,8 +1,6 @@
 <h1>Available Courses</h1>
 
-<div *ngIf="isLoading" class="loading-container">
-
-  <div class="spinner"></div>
+<div *ngIf="isLoading">
 
   <p>Loading Courses...</p>
 
@@ -18,10 +16,59 @@
 
 <div *ngIf="!isLoading">
 
-  <app-course-card
-    *ngFor="let course of courses; trackBy: trackByCourseId"
-    [course]="course">
+  <div
+    *ngFor="
+      let course of courses;
+      trackBy: trackByCourseId
+    ">
 
-  </app-course-card>
+    <app-course-card
+      [course]="course">
+    </app-course-card>
+
+    <button
+      (click)="loadStudents(course.id)">
+
+      View Students
+
+    </button>
+
+    <div *ngIf="selectedCourseId === course.id" class="students-list">
+
+      <h3>Students enrolled in {{ course.name }}</h3>
+
+      <div *ngIf="loadingCourseId === course.id" class="loading-container">
+        <div class="spinner"></div>
+        <p>Loading students...</p>
+      </div>
+
+      <div *ngIf="loadingCourseId !== course.id">
+
+        <p>Total Students: {{ students.length }}</p>
+
+        <ul>
+
+          <li *ngFor="let student of students">
+
+            {{ student.name }}
+
+          </li>
+
+        </ul>
+
+        <p *ngIf="students.length === 0">
+
+          No students found for this course.
+
+        </p>
+
+      </div>
+
+    </div>
+
+    <hr>
+
+  </div>
 
 </div>
+

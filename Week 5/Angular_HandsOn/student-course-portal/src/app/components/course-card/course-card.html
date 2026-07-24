@@ -8,13 +8,17 @@ class="card"
 
 'border-left':
 
-course.gradeStatus=='passed'
+enrollmentService.isEnrolled(course.id)
 
 ? '8px solid green'
 
 : course.gradeStatus=='failed'
 
 ? '8px solid red'
+
+: course.gradeStatus=='passed'
+
+? '8px solid green'
 
 : '8px solid gray'
 

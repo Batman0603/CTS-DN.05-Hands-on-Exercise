@@ -1,28 +1,23 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
+import { Observable } from 'rxjs';
+
+import { Student } from '../models/student.model';
 import { Course } from '../models/course.model';
-
 import { CourseService } from './course.service';
 
 @Injectable({
   providedIn: 'root'
 })
-
 export class EnrollmentService {
 
-  /*
-      Stores only enrolled course IDs.
-  */
+  private apiUrl = 'http://localhost:3000/students';
 
   private enrolledCourseIds: number[] = [];
 
-  /*
-      Service-to-Service Dependency Injection
-
-      EnrollmentService depends on CourseService.
-  */
-
   constructor(
+    private http: HttpClient,
     private courseService: CourseService
   ) {}
 
@@ -49,10 +44,23 @@ export class EnrollmentService {
 
   }
 
+  getStudentsByCourse(courseId: number): Observable<Student[]> {
+
+    return this.http.get<Student[]>(
+      `${this.apiUrl}?courseId=${courseId}`
+    );
+
+  }
+
+  // Keep this method for Student Profile
   getEnrolledCourses(): Course[] {
 
-  return [];
+    return this.courseService
+      .getCachedCourses()
+      .filter(course =>
+        this.enrolledCourseIds.includes(course.id)
+      );
 
-}
+  }
 
 }
