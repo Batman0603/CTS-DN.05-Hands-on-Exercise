@@ -1,127 +1,113 @@
 <div
+    class="card"
+    [ngClass]="cardClasses"
+    [ngStyle]="{
+      'border-left':
+      course.gradeStatus=='passed'
+      ? '6px solid #22c55e'
+      : course.gradeStatus=='failed'
+      ? '6px solid #ef4444'
+      : '6px solid #f59e0b'
+    }">
 
-class="card"
+    <h2>{{ course.name }}</h2>
 
-[ngClass]="cardClasses"
+    <p>
 
-[ngStyle]="{
+        <strong>Code:</strong>
 
-'border-left':
+        {{ course.code }}
 
-enrollmentService.isEnrolled(course.id)
+    </p>
 
-? '8px solid green'
+    <p>
 
-: course.gradeStatus=='failed'
+        <strong>Credits:</strong>
 
-? '8px solid red'
+        {{ course.credits | creditLabel }}
 
-: course.gradeStatus=='passed'
+    </p>
 
-? '8px solid green'
+    <div [ngSwitch]="course.gradeStatus">
 
-: '8px solid gray'
+        <span
+            *ngSwitchCase="'passed'"
+            class="passed">
 
-}"
+            Passed
 
-(click)="openCourse()">
+        </span>
 
-<h2>
+        <span
+            *ngSwitchCase="'failed'"
+            class="failed">
 
-{{course.name}}
+            Failed
 
-</h2>
+        </span>
 
-<p>
+        <span
+            *ngSwitchCase="'pending'"
+            class="pending">
 
-Code :
+            Pending
 
-{{course.code}}
+        </span>
 
-</p>
+    </div>
 
-<p>
+    <div class="card-actions">
 
-Credits :
+        <button
+            class="enroll-btn"
+            (click)="toggleEnrollment()">
 
-{{course.credits | creditLabel}}
+            {{ enrollmentService.isEnrolled(course.id)
+                ? 'Unenroll'
+                : 'Enroll' }}
 
-</p>
+        </button>
 
-<div [ngSwitch]="course.gradeStatus">
+        <button
+            class="details-btn"
+            (click)="toggleDetails()">
 
-<span
+            {{ isExpanded
+                ? 'Hide Details'
+                : 'Show Details' }}
 
-*ngSwitchCase="'passed'"
+        </button>
 
-class="passed">
+        <button
+            class="students-btn"
+            (click)="showStudents()">
 
-Passed
+            👥 View Students
 
-</span>
+        </button>
 
-<span
+    </div>
 
-*ngSwitchCase="'failed'"
+    <div *ngIf="isExpanded">
 
-class="failed">
+        <hr>
 
-Failed
+        <p>
 
-</span>
+            <strong>Course ID:</strong>
 
-<span
+            {{ course.id }}
 
-*ngSwitchCase="'pending'"
+        </p>
 
-class="pending">
+        <p>
 
-Pending
+            <strong>Credits:</strong>
 
-</span>
+            {{ course.credits }}
 
-</div>
+        </p>
 
-<br>
-
-<!-- stopPropagation prevents the card click -->
-
-<button
-
-(click)="$event.stopPropagation(); toggleEnrollment()">
-
-{{ enrollmentService.isEnrolled(course.id) ? 'Unenroll' : 'Enroll' }}
-
-</button>
-
-<button
-
-(click)="$event.stopPropagation(); toggleDetails()">
-
-Show Details
-
-</button>
-
-<div *ngIf="isExpanded">
-
-<hr>
-
-<p>
-
-Course ID :
-
-{{course.id}}
-
-</p>
-
-<p>
-
-Credits :
-
-{{course.credits}}
-
-</p>
-
-</div>
+    </div>
 
 </div>

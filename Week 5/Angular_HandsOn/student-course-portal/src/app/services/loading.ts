@@ -1,26 +1,28 @@
-import { Injectable, signal } from '@angular/core';
+import {
+  Injectable,
+  signal
+} from '@angular/core';
 
 @Injectable({
+
   providedIn: 'root'
+
 })
+
 export class LoadingService {
-
-  id = Math.random();
-
-  constructor() {
-    console.log("LoadingService ID =", this.id);
-  }
 
   isLoading = signal(false);
 
-  show() {
-    console.log("SHOW ->", this.id);
+  show(): void {
+
     this.isLoading.set(true);
+
   }
 
-  hide() {
-    console.log("HIDE ->", this.id);
+  hide(): void {
+
     this.isLoading.set(false);
+
   }
 
 }

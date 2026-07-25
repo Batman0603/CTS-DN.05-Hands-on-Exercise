@@ -1,16 +1,19 @@
 import { inject } from '@angular/core';
 
 import {
-
-  HttpErrorResponse,
-
-  HttpInterceptorFn
-
+  HttpInterceptorFn,
+  HttpErrorResponse
 } from '@angular/common/http';
 
 import { Router } from '@angular/router';
 
-import { catchError, throwError } from 'rxjs';
+import {
+  catchError
+} from 'rxjs/operators';
+
+import {
+  throwError
+} from 'rxjs';
 
 export const errorHandlerInterceptor: HttpInterceptorFn = (
 
@@ -26,11 +29,11 @@ export const errorHandlerInterceptor: HttpInterceptorFn = (
 
     catchError((error: HttpErrorResponse) => {
 
-      console.error('HTTP Error:', error);
+      console.error('Global Error:', error);
 
       if (error.status === 401) {
 
-        alert('Unauthorized');
+        alert('Unauthorized! Redirecting to Home.');
 
         router.navigate(['/']);
 

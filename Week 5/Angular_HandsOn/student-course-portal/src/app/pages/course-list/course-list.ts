@@ -1,23 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-
 import { CommonModule } from '@angular/common';
 
 import { Subject } from 'rxjs';
 
-import { switchMap, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
+import {
+  switchMap,
+  debounceTime,
+  distinctUntilChanged,
+  tap
+} from 'rxjs/operators';
 
 import { CourseCard } from '../../components/course-card/course-card';
 
 import { CourseService } from '../../services/course.service';
-
 import { EnrollmentService } from '../../services/enrollment';
 
 import { Course } from '../../models/course.model';
-
 import { Student } from '../../models/student.model';
 
 @Component({
-
   selector: 'app-course-list',
 
   standalone: true,
@@ -29,8 +30,7 @@ import { Student } from '../../models/student.model';
 
   templateUrl: './course-list.html',
 
-  styleUrl: './course-list.css'
-
+  styleUrls: ['./course-list.css']
 })
 
 export class CourseList implements OnInit {
@@ -41,7 +41,6 @@ export class CourseList implements OnInit {
 
   selectedCourseId: number | null = null;
 
-  // id of the course currently loading students
   loadingCourseId: number | null = null;
 
   isLoading = true;
@@ -63,50 +62,51 @@ export class CourseList implements OnInit {
     this.loadCourses();
 
     /*
-      switchMap cancels the previous HTTP request if
-      another course is selected before it finishes.
-      This prevents old responses from overwriting newer ones.
+      switchMap cancels the previous HTTP request
+      whenever another course is selected.
+      This prevents old responses from replacing
+      newer ones.
     */
 
     this.selectedCourse.pipe(
 
-      // avoid rapid duplicate clicks and ignore repeated same id
       debounceTime(100),
+
       distinctUntilChanged(),
 
-      // show loader while fetching and mark which course is loading
-      tap((courseId: number) => {
-        this.isLoading = true;
+      tap(courseId => {
+
         this.loadingCourseId = courseId;
+
         this.students = [];
+
       }),
 
       switchMap(courseId =>
-        this.enrollmentService.getStudentsByCourse(courseId)
-      ),
 
-      // clear loading flag when response arrives
-      tap(() => {
-        this.isLoading = false;
-        this.loadingCourseId = null;
-      })
+        this.enrollmentService.getStudentsByCourse(courseId)
+
+      )
 
     ).subscribe({
 
       next: students => {
 
-        console.log('Students received', students);
+        console.log('Students:', students);
 
-        this.students = [...students];
+        this.students = students;
+
+        this.loadingCourseId = null;
 
       },
 
       error: err => {
 
-        console.error('Failed to load students:', err);
+        console.error(err);
 
         this.students = [];
-        this.isLoading = false;
+
+        this.loadingCourseId = null;
 
       }
 
@@ -144,7 +144,22 @@ export class CourseList implements OnInit {
 
   loadStudents(courseId: number): void {
 
-    console.log('Loading students for course:', courseId);
+    /*
+      Clicking the same course again hides
+      the students list.
+    */
+
+    if (this.selectedCourseId === courseId) {
+
+      this.selectedCourseId = null;
+
+      this.students = [];
+
+      this.loadingCourseId = null;
+
+      return;
+
+    }
 
     this.selectedCourseId = courseId;
 
@@ -153,8 +168,11 @@ export class CourseList implements OnInit {
   }
 
   trackByCourseId(
+
     index: number,
+
     course: Course
+
   ): number {
 
     return course.id;

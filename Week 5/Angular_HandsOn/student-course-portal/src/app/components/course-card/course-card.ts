@@ -2,28 +2,20 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { CreditLabelPipe } from '../../pipes/credit-label-pipe';
-
 import { EnrollmentService } from '../../services/enrollment';
 import { Course } from '../../models/course.model';
 
 @Component({
-
   selector: 'app-course-card',
-
   standalone: true,
-
   imports: [
     CommonModule,
     CreditLabelPipe
   ],
-
   templateUrl: './course-card.html',
-
-  styleUrl: './course-card.css'
-
+  styleUrls: ['./course-card.css']
 })
-
-export class CourseCard{
+export class CourseCard {
 
   @Input()
   course!: Course;
@@ -31,12 +23,13 @@ export class CourseCard{
   @Output()
   cardClicked = new EventEmitter<number>();
 
+  @Output()
+  viewStudents = new EventEmitter<number>();
+
   isExpanded = false;
 
   constructor(
-
     public enrollmentService: EnrollmentService
-
   ) {}
 
   toggleEnrollment() {
@@ -45,9 +38,7 @@ export class CourseCard{
 
       this.enrollmentService.unenroll(this.course.id);
 
-    }
-
-    else {
+    } else {
 
       this.enrollmentService.enroll(this.course.id);
 
@@ -67,6 +58,12 @@ export class CourseCard{
 
   }
 
+  showStudents() {
+
+    this.viewStudents.emit(this.course.id);
+
+  }
+
   get cardClasses() {
 
     return {
@@ -77,7 +74,7 @@ export class CourseCard{
       'card--full':
         this.course.credits >= 4,
 
-      'expanded':
+      expanded:
         this.isExpanded
 
     };

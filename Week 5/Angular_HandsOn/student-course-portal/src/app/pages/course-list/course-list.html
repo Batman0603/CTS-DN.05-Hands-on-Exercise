@@ -1,74 +1,91 @@
-<h1>Available Courses</h1>
+<div class="page">
 
-<div *ngIf="isLoading">
+    <h1>Available Courses</h1>
 
-  <p>Loading Courses...</p>
+    <div
+        *ngIf="isLoading"
+        class="loading-container">
 
-</div>
-
-<p
-  *ngIf="errorMessage"
-  style="color:red">
-
-  {{ errorMessage }}
-
-</p>
-
-<div *ngIf="!isLoading">
-
-  <div
-    *ngFor="
-      let course of courses;
-      trackBy: trackByCourseId
-    ">
-
-    <app-course-card
-      [course]="course">
-    </app-course-card>
-
-    <button
-      (click)="loadStudents(course.id)">
-
-      View Students
-
-    </button>
-
-    <div *ngIf="selectedCourseId === course.id" class="students-list">
-
-      <h3>Students enrolled in {{ course.name }}</h3>
-
-      <div *ngIf="loadingCourseId === course.id" class="loading-container">
         <div class="spinner"></div>
-        <p>Loading students...</p>
-      </div>
 
-      <div *ngIf="loadingCourseId !== course.id">
-
-        <p>Total Students: {{ students.length }}</p>
-
-        <ul>
-
-          <li *ngFor="let student of students">
-
-            {{ student.name }}
-
-          </li>
-
-        </ul>
-
-        <p *ngIf="students.length === 0">
-
-          No students found for this course.
-
-        </p>
-
-      </div>
+        <p>Loading Courses...</p>
 
     </div>
 
-    <hr>
+    <div
+        *ngIf="errorMessage"
+        class="error">
 
-  </div>
+        {{ errorMessage }}
+
+    </div>
+
+    <div *ngIf="!isLoading">
+
+        <div
+            class="course-container"
+            *ngFor="let course of courses; trackBy: trackByCourseId">
+
+            <app-course-card
+                [course]="course"
+                (viewStudents)="loadStudents($event)">
+            </app-course-card>
+
+            <div
+                *ngIf="selectedCourseId === course.id"
+                class="students">
+
+                <h2>
+
+                    Students enrolled in
+
+                    <span>{{ course.name }}</span>
+
+                </h2>
+
+                <div
+                    *ngIf="loadingCourseId === course.id"
+                    class="loading-container">
+
+                    <div class="spinner"></div>
+
+                    <p>Loading students...</p>
+
+                </div>
+
+                <div *ngIf="loadingCourseId !== course.id">
+
+                    <p class="student-count">
+
+                        Total Students:
+                        <strong>{{ students.length }}</strong>
+
+                    </p>
+
+                    <ul *ngIf="students.length > 0">
+
+                        <li *ngFor="let student of students">
+
+                            {{ student.name }}
+
+                        </li>
+
+                    </ul>
+
+                    <div
+                        *ngIf="students.length === 0"
+                        class="empty-state">
+
+                        No students are enrolled in this course.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
-
