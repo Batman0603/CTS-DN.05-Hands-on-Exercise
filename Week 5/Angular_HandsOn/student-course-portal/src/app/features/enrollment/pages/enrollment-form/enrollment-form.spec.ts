@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
 
 import { EnrollmentForm } from './enrollment-form';
 
@@ -8,7 +9,8 @@ describe('EnrollmentForm', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EnrollmentForm]
+      imports: [EnrollmentForm],
+      providers: [provideHttpClient()]
     })
     .compileComponents();
 

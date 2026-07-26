@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Observable, of, take } from 'rxjs';
 
@@ -39,7 +39,12 @@ export class CourseCard implements OnChanges {
     this.enrolled$ = of(false);
   }
 
-  ngOnChanges(): void {
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(
+      'Course Changed',
+      changes
+    );
+
     if (this.course) {
       this.enrolled$ = this.store.select(
         selectIsCourseEnrolled,

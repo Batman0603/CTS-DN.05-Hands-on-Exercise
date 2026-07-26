@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
 
 import { CourseSummaryWidget } from './course-summary-widget';
 
@@ -8,7 +9,8 @@ describe('CourseSummaryWidget', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CourseSummaryWidget]
+      imports: [CourseSummaryWidget],
+      providers: [provideHttpClient()]
     })
     .compileComponents();
 
