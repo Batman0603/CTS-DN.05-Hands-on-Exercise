@@ -1,62 +1,32 @@
 <div
     class="card"
-    [ngClass]="cardClasses"
-    [ngStyle]="{
-      'border-left':
-      course.gradeStatus=='passed'
-      ? '6px solid #22c55e'
-      : course.gradeStatus=='failed'
-      ? '6px solid #ef4444'
-      : '6px solid #f59e0b'
-    }">
+    [ngClass]="cardClasses">
 
     <h2>{{ course.name }}</h2>
 
     <p>
-
         <strong>Code:</strong>
-
         {{ course.code }}
-
     </p>
 
     <p>
-
         <strong>Credits:</strong>
-
         {{ course.credits | creditLabel }}
-
     </p>
 
-    <div [ngSwitch]="course.gradeStatus">
-
+    <p>
+        <strong>Status:</strong>
         <span
-            *ngSwitchCase="'passed'"
-            class="passed">
-
-            Passed
-
+            [ngClass]="{
+                'passed': course.gradeStatus === 'passed',
+                'failed': course.gradeStatus === 'failed',
+                'pending': course.gradeStatus === 'pending'
+            }">
+            {{ course.gradeStatus }}
         </span>
+    </p>
 
-        <span
-            *ngSwitchCase="'failed'"
-            class="failed">
-
-            Failed
-
-        </span>
-
-        <span
-            *ngSwitchCase="'pending'"
-            class="pending">
-
-            Pending
-
-        </span>
-
-    </div>
-
-    <div class="card-actions">
+    <div class="button-group">
 
         <button
             class="enroll-btn"
@@ -82,7 +52,7 @@
             class="students-btn"
             (click)="showStudents()">
 
-            👥 View Students
+            View Students
 
         </button>
 

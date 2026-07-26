@@ -1,161 +1,109 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-
-import { Subject } from 'rxjs';
+import {
+  Component,
+  OnInit
+} from '@angular/core';
 
 import {
-  switchMap,
-  debounceTime,
-  distinctUntilChanged,
-  tap
-} from 'rxjs/operators';
+  CommonModule
+} from '@angular/common';
 
-import { CourseCard } from '../../components/course-card/course-card';
+import {
+  Observable
+} from 'rxjs';
 
-import { CourseService } from '../../services/course.service';
-import { EnrollmentService } from '../../services/enrollment';
+import {
+  Store
+} from '@ngrx/store';
 
-import { Course } from '../../models/course.model';
-import { Student } from '../../models/student.model';
+import {
+  Course
+} from '../../models/course.model';
+
+import {
+  Student
+} from '../../models/student.model';
+
+import {
+  CourseCard
+} from '../../components/course-card/course-card';
+
+import {
+  EnrollmentService
+} from '../../services/enrollment';
+
+import {
+  loadCourses
+} from '../../store/course/course.actions';
+
+import {
+  selectAllCourses,
+  selectCoursesLoading,
+  selectCoursesError
+} from '../../store/course/course.selectors';
 
 @Component({
   selector: 'app-course-list',
-
   standalone: true,
-
   imports: [
     CommonModule,
     CourseCard
   ],
-
   templateUrl: './course-list.html',
-
   styleUrls: ['./course-list.css']
 })
-
 export class CourseList implements OnInit {
 
-  courses: Course[] = [];
+  courses$!: Observable<Course[]>;
 
-  students: Student[] = [];
+  loading$!: Observable<boolean>;
+
+  error$!: Observable<string | null>;
 
   selectedCourseId: number | null = null;
 
-  loadingCourseId: number | null = null;
-
-  isLoading = true;
-
-  errorMessage = '';
-
-  private selectedCourse = new Subject<number>();
+  students: Student[] = [];
 
   constructor(
-
-    private courseService: CourseService,
-
+    private store: Store,
     private enrollmentService: EnrollmentService
-
   ) {}
 
   ngOnInit(): void {
 
-    this.loadCourses();
+    this.courses$ =
+      this.store.select(selectAllCourses);
 
-    /*
-      switchMap cancels the previous HTTP request
-      whenever another course is selected.
-      This prevents old responses from replacing
-      newer ones.
-    */
+    this.loading$ =
+      this.store.select(selectCoursesLoading);
 
-    this.selectedCourse.pipe(
+    this.error$ =
+      this.store.select(selectCoursesError);
 
-      debounceTime(100),
-
-      distinctUntilChanged(),
-
-      tap(courseId => {
-
-        this.loadingCourseId = courseId;
-
-        this.students = [];
-
-      }),
-
-      switchMap(courseId =>
-
-        this.enrollmentService.getStudentsByCourse(courseId)
-
-      )
-
-    ).subscribe({
-
-      next: students => {
-
-        console.log('Students:', students);
-
-        this.students = students;
-
-        this.loadingCourseId = null;
-
-      },
-
-      error: err => {
-
-        console.error(err);
-
-        this.students = [];
-
-        this.loadingCourseId = null;
-
-      }
-
-    });
+    this.store.dispatch(
+      loadCourses()
+    );
 
   }
 
-  loadCourses(): void {
+  trackByCourseId(
+    index: number,
+    course: Course
+  ): number {
 
-    this.isLoading = true;
-
-    this.errorMessage = '';
-
-    this.courseService.getCourses().subscribe({
-
-      next: courses => {
-
-        this.courses = courses;
-
-        this.isLoading = false;
-
-      },
-
-      error: err => {
-
-        this.errorMessage = err.message;
-
-        this.isLoading = false;
-
-      }
-
-    });
+    return course.id;
 
   }
 
   loadStudents(courseId: number): void {
 
-    /*
-      Clicking the same course again hides
-      the students list.
-    */
+    console.log('Loading students for course:', courseId);
 
+    // Toggle: if same course is selected, hide it; otherwise load and show
     if (this.selectedCourseId === courseId) {
 
       this.selectedCourseId = null;
 
       this.students = [];
-
-      this.loadingCourseId = null;
 
       return;
 
@@ -163,19 +111,25 @@ export class CourseList implements OnInit {
 
     this.selectedCourseId = courseId;
 
-    this.selectedCourse.next(courseId);
+    this.enrollmentService.getStudentsByCourse(courseId).subscribe({
 
-  }
+      next: (students) => {
 
-  trackByCourseId(
+        console.log('Students received:', students);
 
-    index: number,
+        this.students = students;
 
-    course: Course
+      },
 
-  ): number {
+      error: (err) => {
 
-    return course.id;
+        console.error('Failed to load students:', err);
+
+        this.students = [];
+
+      }
+
+    });
 
   }
 

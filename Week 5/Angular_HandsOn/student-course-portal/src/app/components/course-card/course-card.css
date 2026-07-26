@@ -8,9 +8,11 @@
 
     margin:20px 0;
 
+    border:2px solid transparent;
+
     box-shadow:0 8px 24px rgba(0,0,0,.08);
 
-    transition:.25s;
+    transition:all .3s ease;
 
 }
 
@@ -22,6 +24,52 @@
 
 }
 
+.card--enrolled{
+
+    background:#ecfdf5;
+
+    border-color:#22c55e;
+
+    border-left:8px solid #16a34a;
+
+}
+
+.card--full{
+
+    border-right:6px solid #2563eb;
+
+}
+
+.card.passed-course{
+
+    background:#ecfdf5;
+
+    border-left:8px solid #16a34a;
+
+}
+
+.card.failed-course{
+
+    background:#fef2f2;
+
+    border-left:8px solid #dc2626;
+
+}
+
+.card.pending-course{
+
+    background:#fff7ed;
+
+    border-left:8px solid #f59e0b;
+
+}
+
+.expanded{
+
+    transform:scale(1.01);
+
+}
+
 .card h2{
 
     margin:0 0 16px;
@@ -30,7 +78,9 @@
 
 .card p{
 
-    margin:8px 0;
+    margin:10px 0;
+
+    color:#374151;
 
 }
 
@@ -58,7 +108,7 @@
 
 }
 
-.card-actions{
+.button-group{
 
     display:flex;
 
@@ -66,7 +116,7 @@
 
     gap:12px;
 
-    margin-top:22px;
+    margin-top:24px;
 
 }
 
@@ -80,17 +130,31 @@
 
     background:#2563eb;
 
-    color:white;
+    color:#fff;
 
     cursor:pointer;
 
-    transition:.2s;
+    font-weight:600;
+
+    transition:.25s;
 
 }
 
 .enroll-btn:hover{
 
     background:#1d4ed8;
+
+}
+
+.card--enrolled .enroll-btn{
+
+    background:#16a34a;
+
+}
+
+.card--enrolled .enroll-btn:hover{
+
+    background:#15803d;
 
 }
 
@@ -106,7 +170,9 @@
 
     cursor:pointer;
 
-    transition:.2s;
+    font-weight:600;
+
+    transition:.25s;
 
 }
 
@@ -126,15 +192,15 @@
 
     border:1px solid #2563eb;
 
-    background:white;
+    background:#fff;
 
     color:#2563eb;
 
     cursor:pointer;
 
-    transition:.25s;
-
     font-weight:600;
+
+    transition:.25s;
 
 }
 
@@ -142,6 +208,6 @@
 
     background:#2563eb;
 
-    color:white;
+    color:#fff;
 
 }

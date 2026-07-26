@@ -32,7 +32,7 @@ export class CourseCard {
     public enrollmentService: EnrollmentService
   ) {}
 
-  toggleEnrollment() {
+  toggleEnrollment(): void {
 
     if (this.enrollmentService.isEnrolled(this.course.id)) {
 
@@ -46,19 +46,21 @@ export class CourseCard {
 
   }
 
-  toggleDetails() {
+  toggleDetails(): void {
 
     this.isExpanded = !this.isExpanded;
 
   }
 
-  openCourse() {
+  openCourse(): void {
 
     this.cardClicked.emit(this.course.id);
 
   }
 
-  showStudents() {
+  showStudents(): void {
+
+    console.log("Button clicked");
 
     this.viewStudents.emit(this.course.id);
 
@@ -73,6 +75,15 @@ export class CourseCard {
 
       'card--full':
         this.course.credits >= 4,
+
+      'passed-course':
+        this.course.gradeStatus === 'passed',
+
+      'failed-course':
+        this.course.gradeStatus === 'failed',
+
+      'pending-course':
+        this.course.gradeStatus === 'pending',
 
       expanded:
         this.isExpanded
