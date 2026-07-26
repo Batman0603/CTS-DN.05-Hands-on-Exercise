@@ -27,12 +27,14 @@ import {
 import { routes } from './app.routes';
 
 import { courseReducer } from './store/course/course.reducer';
+import { enrollmentReducer } from './store/enrollment/enrollment.reducer';
 
 import { CourseEffects } from './store/course/course.effects';
-
-import { authInterceptor } from './interceptors/auth-interceptor';
+import { EnrollmentEffects } from './store/enrollment/enrollment.effects';
 
 import { loadingInterceptor } from './interceptors/loading-interceptor';
+
+import { authInterceptor } from './interceptors/auth-interceptor';
 
 import { errorHandlerInterceptor } from './interceptors/error-handler-interceptor';
 
@@ -63,15 +65,13 @@ export const appConfig: ApplicationConfig = {
     ),
 
     provideStore({
-
-      course: courseReducer
-
+      course: courseReducer,
+      enrollment: enrollmentReducer
     }),
 
     provideEffects([
-
-      CourseEffects
-
+      CourseEffects,
+      EnrollmentEffects
     ]),
 
     provideStoreDevtools({

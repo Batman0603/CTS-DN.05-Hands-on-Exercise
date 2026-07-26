@@ -1,29 +1,30 @@
 import { Injectable, inject } from '@angular/core';
 
-import {
-  Actions,
-  createEffect,
-  ofType
-} from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 import { of } from 'rxjs';
 
 import {
+
   switchMap,
   map,
   catchError,
   tap
+
 } from 'rxjs/operators';
 
 import { CourseService } from '../../services/course.service';
 
 import {
+
   loadCourses,
   loadCoursesSuccess,
   loadCoursesFailure
+
 } from './course.actions';
 
 @Injectable()
+
 export class CourseEffects {
 
   private actions$ = inject(Actions);
@@ -36,21 +37,15 @@ export class CourseEffects {
 
       ofType(loadCourses),
 
-      tap(() => {
+      tap(() =>
 
-        console.log('[NgRx] loadCourses action received');
+        console.log('[NgRx] loadCourses action received')
 
-      }),
+      ),
 
       switchMap(() =>
 
         this.courseService.getCourses().pipe(
-
-          tap(courses => {
-
-            console.log('[NgRx] HTTP Success', courses);
-
-          }),
 
           map(courses =>
 
@@ -62,11 +57,15 @@ export class CourseEffects {
 
           ),
 
-          catchError(error => {
+          tap(courses =>
 
-            console.error('[NgRx] HTTP Error', error);
+            console.log('[NgRx] HTTP Success', courses)
 
-            return of(
+          ),
+
+          catchError(error =>
+
+            of(
 
               loadCoursesFailure({
 
@@ -74,9 +73,9 @@ export class CourseEffects {
 
               })
 
-            );
+            )
 
-          })
+          )
 
         )
 

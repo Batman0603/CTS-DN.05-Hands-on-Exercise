@@ -1,6 +1,13 @@
 <div
     class="card"
-    [ngClass]="cardClasses">
+    [ngClass]="{
+      'card--enrolled': enrolled$ | async,
+      'card--full': course.credits >= 4,
+      'passed-course': course.gradeStatus === 'passed',
+      'failed-course': course.gradeStatus === 'failed',
+      'pending-course': course.gradeStatus === 'pending',
+      expanded: isExpanded
+    }">
 
     <h2>{{ course.name }}</h2>
 
@@ -32,7 +39,7 @@
             class="enroll-btn"
             (click)="toggleEnrollment()">
 
-            {{ enrollmentService.isEnrolled(course.id)
+            {{ (enrolled$ | async)
                 ? 'Unenroll'
                 : 'Enroll' }}
 

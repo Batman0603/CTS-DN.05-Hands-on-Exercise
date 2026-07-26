@@ -4,37 +4,37 @@
 
 <h2>Enrolled Courses</h2>
 
-<div *ngIf="enrolledCourses.length > 0; else noCourses">
-
+<ng-container *ngIf="enrolledCourses$ | async as enrolledCourses">
+  <div *ngIf="enrolledCourses.length > 0; else noCourses">
     <div
-        class="course-card"
-        *ngFor="let course of enrolledCourses">
+      class="course-card"
+      *ngFor="let course of enrolledCourses">
 
-        <h3>{{course.name}}</h3>
+      <h3>{{ course.name }}</h3>
 
-        <p>
-            <strong>Course ID:</strong>
-            {{course.id}}
-        </p>
+      <p>
+        <strong>Course ID:</strong>
+        {{ course.id }}
+      </p>
 
-        <p>
-            <strong>Code:</strong>
-            {{course.code}}
-        </p>
+      <p>
+        <strong>Code:</strong>
+        {{ course.code }}
+      </p>
 
-        <p>
-            <strong>Credits:</strong>
-            {{course.credits}}
-        </p>
+      <p>
+        <strong>Credits:</strong>
+        {{ course.credits }}
+      </p>
 
-        <p>
-            <strong>Status:</strong>
-            {{course.gradeStatus}}
-        </p>
+      <p>
+        <strong>Status:</strong>
+        {{ course.gradeStatus }}
+      </p>
 
     </div>
-
-</div>
+  </div>
+</ng-container>
 
 <ng-template #noCourses>
 

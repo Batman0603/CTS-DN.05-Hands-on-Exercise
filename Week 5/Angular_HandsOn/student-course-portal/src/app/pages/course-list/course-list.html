@@ -26,41 +26,60 @@
 
   <!-- Course List -->
 
-  <div *ngIf="!(loading$ | async)">
+  <ng-container *ngIf="!(loading$ | async)">
 
     <div
       class="course-container"
-      *ngFor="let course of (courses$ | async); trackBy: trackByCourseId">
+      *ngFor="let course of ((courses$ | async) ?? []); trackBy: trackByCourseId">
 
       <app-course-card
         [course]="course"
         (viewStudents)="loadStudents($event)">
       </app-course-card>
 
-      <div *ngIf="selectedCourseId === course.id" class="students-card">
+      <ng-container *ngIf="(selectedCourseId$ | async) as selectedCourseId">
+        <div
+          *ngIf="selectedCourseId === course.id"
+          class="students-card">
 
-        <h3>Students enrolled in {{ course.name }}</h3>
+          <h3>
+            Students enrolled in {{ course.name }}
+          </h3>
 
-        <ul class="students-list">
+          <div *ngIf="studentsLoading$ | async; else studentList">
+            <div class="loading-container">
+              <div class="spinner"></div>
+              <p>Loading students...</p>
+            </div>
+          </div>
 
-          <li *ngFor="let student of students" class="student-item">
+          <ng-template #studentList>
+            <ng-container *ngIf="(students$ | async) as students">
+              <ul
+                *ngIf="students.length > 0"
+                class="students-list">
 
-            {{ student.name }}
+                <li
+                  *ngFor="let student of students"
+                  class="student-item">
+                  {{ student.name }}
+                </li>
 
-          </li>
+              </ul>
 
-        </ul>
+              <p
+                *ngIf="students.length === 0"
+                class="no-students">
+                No students found for this course.
+              </p>
+            </ng-container>
+          </ng-template>
 
-        <p *ngIf="students.length === 0" class="no-students">
-
-          No students found for this course.
-
-        </p>
-
-      </div>
+        </div>
+      </ng-container>
 
     </div>
 
-  </div>
+  </ng-container>
 
 </div>

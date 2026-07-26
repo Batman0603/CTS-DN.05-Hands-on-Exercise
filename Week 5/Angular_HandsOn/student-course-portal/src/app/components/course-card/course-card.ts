@@ -1,9 +1,12 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Observable, of, take } from 'rxjs';
 
 import { CreditLabelPipe } from '../../pipes/credit-label-pipe';
-import { EnrollmentService } from '../../services/enrollment';
+import { Store } from '@ngrx/store';
 import { Course } from '../../models/course.model';
+import { enrollCourse, unenrollCourse } from '../../store/enrollment/enrollment.actions';
+import { selectIsCourseEnrolled } from '../../store/enrollment/enrollment.selectors';
 
 @Component({
   selector: 'app-course-card',
@@ -15,7 +18,7 @@ import { Course } from '../../models/course.model';
   templateUrl: './course-card.html',
   styleUrls: ['./course-card.css']
 })
-export class CourseCard {
+export class CourseCard implements OnChanges {
 
   @Input()
   course!: Course;
@@ -28,68 +31,58 @@ export class CourseCard {
 
   isExpanded = false;
 
+  enrolled$!: Observable<boolean>;
+
   constructor(
-    public enrollmentService: EnrollmentService
-  ) {}
+    private store: Store
+  ) {
+    this.enrolled$ = of(false);
+  }
+
+  ngOnChanges(): void {
+    if (this.course) {
+      this.enrolled$ = this.store.select(
+        selectIsCourseEnrolled,
+        { courseId: this.course.id }
+      );
+    }
+  }
 
   toggleEnrollment(): void {
-
-    if (this.enrollmentService.isEnrolled(this.course.id)) {
-
-      this.enrollmentService.unenroll(this.course.id);
-
-    } else {
-
-      this.enrollmentService.enroll(this.course.id);
-
-    }
-
+    this.enrolled$.pipe(take(1)).subscribe(enrolled => {
+      if (enrolled) {
+        this.store.dispatch(unenrollCourse({ courseId: this.course.id }));
+      } else {
+        this.store.dispatch(enrollCourse({ courseId: this.course.id }));
+      }
+    });
   }
 
   toggleDetails(): void {
-
     this.isExpanded = !this.isExpanded;
-
   }
 
   openCourse(): void {
-
     this.cardClicked.emit(this.course.id);
-
   }
 
   showStudents(): void {
-
-    console.log("Button clicked");
-
+    console.log('Button clicked');
     this.viewStudents.emit(this.course.id);
-
   }
 
   get cardClasses() {
-
     return {
-
-      'card--enrolled':
-        this.enrollmentService.isEnrolled(this.course.id),
-
       'card--full':
         this.course.credits >= 4,
-
       'passed-course':
         this.course.gradeStatus === 'passed',
-
       'failed-course':
         this.course.gradeStatus === 'failed',
-
       'pending-course':
         this.course.gradeStatus === 'pending',
-
       expanded:
         this.isExpanded
-
     };
-
   }
-
 }

@@ -8,7 +8,8 @@ import {
 } from '@angular/common';
 
 import {
-  Observable
+  Observable,
+  take
 } from 'rxjs';
 
 import {
@@ -28,30 +29,50 @@ import {
 } from '../../components/course-card/course-card';
 
 import {
-  EnrollmentService
-} from '../../services/enrollment';
+  selectAllCourses,
+  selectCoursesLoading,
+  selectCoursesError
+} from '../../store/course/course.selectors';
 
 import {
   loadCourses
 } from '../../store/course/course.actions';
 
 import {
-  selectAllCourses,
-  selectCoursesLoading,
-  selectCoursesError
-} from '../../store/course/course.selectors';
+  loadCourseStudents,
+  clearSelectedCourse
+} from '../../store/enrollment/enrollment.actions';
+
+import {
+  selectSelectedCourseId,
+  selectSelectedCourseStudents,
+  selectStudentsLoading
+} from '../../store/enrollment/enrollment.selectors';
 
 @Component({
+
   selector: 'app-course-list',
+
   standalone: true,
+
   imports: [
+
     CommonModule,
     CourseCard
+
   ],
+
   templateUrl: './course-list.html',
+
   styleUrls: ['./course-list.css']
+
 })
+
 export class CourseList implements OnInit {
+
+  // -----------------------------
+  // NgRx Store
+  // -----------------------------
 
   courses$!: Observable<Course[]>;
 
@@ -59,13 +80,16 @@ export class CourseList implements OnInit {
 
   error$!: Observable<string | null>;
 
-  selectedCourseId: number | null = null;
+  selectedCourseId$!: Observable<number | null>;
 
-  students: Student[] = [];
+  students$!: Observable<Student[]>;
+
+  studentsLoading$!: Observable<boolean>;
 
   constructor(
-    private store: Store,
-    private enrollmentService: EnrollmentService
+
+    private store: Store
+
   ) {}
 
   ngOnInit(): void {
@@ -79,57 +103,46 @@ export class CourseList implements OnInit {
     this.error$ =
       this.store.select(selectCoursesError);
 
-    this.store.dispatch(
-      loadCourses()
-    );
+    this.selectedCourseId$ =
+      this.store.select(selectSelectedCourseId);
 
-  }
+    this.students$ =
+      this.store.select(selectSelectedCourseStudents);
 
-  trackByCourseId(
-    index: number,
-    course: Course
-  ): number {
+    this.studentsLoading$ =
+      this.store.select(selectStudentsLoading);
 
-    return course.id;
+    this.store.dispatch(loadCourses());
 
   }
 
   loadStudents(courseId: number): void {
 
-    console.log('Loading students for course:', courseId);
+    this.selectedCourseId$.pipe(take(1)).subscribe(current => {
 
-    // Toggle: if same course is selected, hide it; otherwise load and show
-    if (this.selectedCourseId === courseId) {
+      if (current === courseId) {
 
-      this.selectedCourseId = null;
+        this.store.dispatch(clearSelectedCourse());
 
-      this.students = [];
+      } else {
 
-      return;
-
-    }
-
-    this.selectedCourseId = courseId;
-
-    this.enrollmentService.getStudentsByCourse(courseId).subscribe({
-
-      next: (students) => {
-
-        console.log('Students received:', students);
-
-        this.students = students;
-
-      },
-
-      error: (err) => {
-
-        console.error('Failed to load students:', err);
-
-        this.students = [];
+        this.store.dispatch(loadCourseStudents({ courseId }));
 
       }
 
     });
+
+  }
+
+  trackByCourseId(
+
+    index: number,
+
+    course: Course
+
+  ): number {
+
+    return course.id;
 
   }
 
